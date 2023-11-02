@@ -1,7 +1,5 @@
 var express = require('express');
 var router = express.Router();
-const fs = require('fs');
-var path = require('path');
 const AWS = require("aws-sdk");
 const s3 = new AWS.S3()
 const { requiresAuth } = require('express-openid-connect');
@@ -53,6 +51,7 @@ router.get('/:pictureName',  requiresAuth(), async function(req, res, next) {
 router.post('/',  requiresAuth(), async function(req, res, next) {
     const file = req.files.file;
     console.log(req.files);
+    console.log(req.oidc.user);
     await s3.putObject({
         Body: file.data,
         Bucket: process.env.CYCLIC_BUCKET_NAME,
