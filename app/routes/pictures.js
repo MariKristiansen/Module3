@@ -60,4 +60,13 @@ router.post('/',  requiresAuth(), async function(req, res, next) {
     res.end();
 });
 
+router.delete('/:pictureName', requiresAuth(), async function(req, res, next) {  
+    var params = {
+        Bucket: process.env.CYCLIC_BUCKET_NAME,
+        Key: req.oidc.user.email + "/" + req.params.pictureName,
+    };
+    await s3.deleteObject(params).promise()
+    res.end();
+});
+
 module.exports = router;
